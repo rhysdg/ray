@@ -11,6 +11,7 @@ from typing import Any, Dict, List, Optional, Tuple
 import click
 import watchfiles
 import yaml
+from pyaml_env import parse_config
 
 import ray
 from ray import serve
@@ -244,7 +245,7 @@ def _generate_config_from_file_or_import_path(
 
         # TODO(edoakes): runtime_env is silently ignored -- should we enable overriding?
         with open(config_path, "r") as config_file:
-            config_dict = yaml.safe_load(config_file)
+            config_dict = parse_config(config_file)
             config = ServeDeploySchema.parse_obj(config_dict)
     else:
         # TODO(edoakes): should we default to --working-dir="." for this?
